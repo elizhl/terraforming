@@ -2,6 +2,10 @@ module Terraforming
   module Util
     def apply_template(client, erb)
       ERB.new(open(template_path(erb)).read, nil, "-").result(binding)
+
+      File.open(erb.split('/')[1] + '.tf', 'w') do |f|
+        f.write ERB.new(open(template_path(erb)).read, nil, "-").result(binding)
+      end
     end
 
     def name_from_tag(resource, default_name)

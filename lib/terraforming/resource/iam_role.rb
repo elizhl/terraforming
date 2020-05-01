@@ -16,7 +16,7 @@ module Terraforming
       end
 
       def tf
-        apply_template(@client, "tf/iam_role")
+        apply_template(@client, "tf12/iam_role")
       end
 
       def tfstate
