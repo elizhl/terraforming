@@ -16,7 +16,7 @@ module Terraforming
       end
 
       def tf
-        apply_template(@client, "tf12/iam_policy")
+        apply_template(@client, "tf12/policies")
       end
 
       def tfstate

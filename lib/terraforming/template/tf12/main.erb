@@ -1,7 +1,16 @@
+provider "aws" {
+  region  = var.aws_region
+	profile = var.profile
+}
+
 <% iam_users.each do |user| -%>
 resource "aws_iam_user" "<%= module_name_of(user) %>" {
   name = "<%= user.user_name %>"
   path = "<%= user.path %>"
+
+  tags = {
+    "Organization" = var.organization 
+  }
 }
 
 <% end -%>
