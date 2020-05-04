@@ -20,26 +20,24 @@ module Terraforming
       end
 
       def tfstate
-        File.open('state_test.tf', 'w') do |f|
-          iam_policies.inject({}) do |resources, policy|
-            version = iam_policy_version_of(policy)
-            attributes = {
+        iam_policies.inject({}) do |resources, policy|
+          version = iam_policy_version_of(policy)
+          attributes = {
+            "id" => policy.arn,
+            "name" => policy.policy_name,
+            "path" => policy.path,
+            "description" => iam_policy_description(policy),
+            "policy" => prettify_policy(version.document, breakline: true, unescape: true),
+          }
+          resources["aws_iam_policy.#{module_name_of(policy)}"] = {
+            "type" => "aws_iam_policy",
+            "primary" => {
               "id" => policy.arn,
-              "name" => policy.policy_name,
-              "path" => policy.path,
-              "description" => iam_policy_description(policy),
-              "policy" => prettify_policy(version.document, breakline: true, unescape: true),
+              "attributes" => attributes
             }
-            resources["aws_iam_policy.#{module_name_of(policy)}"] = {
-              "type" => "aws_iam_policy",
-              "primary" => {
-                "id" => policy.arn,
-                "attributes" => attributes
-              }
-            }
+          }
 
-            resources
-          end
+          resources
         end
       end
 
