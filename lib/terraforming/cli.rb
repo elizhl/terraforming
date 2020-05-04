@@ -230,6 +230,11 @@ module Terraforming
       execute(Terraforming::Resource::SNSTopicSubscription, options)
     end
 
+    desc "refresh", "terraform refresh"
+    def refresh
+      system("terraform refresh")
+    end
+
     private
 
     def configure_aws(options)
